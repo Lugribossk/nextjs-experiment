@@ -1,4 +1,5 @@
 import type {MutationResolvers, QueryResolvers, Resolvers} from "../../target/codegen/graphql";
+import {authResolvers} from "../auth";
 
 const queryResolvers: Required<QueryResolvers> = {
     getUser(_, {id}) {
@@ -9,7 +10,8 @@ const queryResolvers: Required<QueryResolvers> = {
 const mutationResolvers: Required<MutationResolvers> = {
     updateUser(_, {user}) {
         return user;
-    }
+    },
+    ...authResolvers
 };
 
 const resolvers: Resolvers = {

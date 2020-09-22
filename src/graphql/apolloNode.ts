@@ -6,6 +6,7 @@ import typeDefs from "../../schema/schema.graphql";
 import type {Sequelize} from "sequelize";
 import {createApiContext, createSsrContext} from "./context";
 import resolvers from "./resolvers";
+import type {GetServerSidePropsContext} from "next";
 
 const schema = makeExecutableSchema({
     typeDefs: typeDefs,
@@ -20,11 +21,11 @@ export const getApolloServer = (db: Sequelize) => {
     });
 };
 
-export const getApolloClientNode = (db: Sequelize) => {
+export const getApolloClientNode = (db: Sequelize, gsspContext?: GetServerSidePropsContext) => {
     return new ApolloClient({
         link: new SchemaLink({
             schema: schema,
-            context: createSsrContext(db)
+            context: createSsrContext(db, gsspContext)
         }),
         ssrMode: true,
         cache: new InMemoryCache()
