@@ -13,12 +13,14 @@
         "start": "next start",
         "codegen": "graphql-codegen --config schema/codegen.yml",
         "prettier:fix": "prettier --write \"{schema,src,test}/**/*.{ts,tsx,json,scss,graphql}\"",
-        "prettier:check": "prettier --check \"{schema,src,test}/**/*.{ts,tsx,json,scss,graphql}\""
+        "prettier:check": "prettier --check \"{schema,src,test}/**/*.{ts,tsx,json,scss,graphql}\"",
+        "favicon":  "real-favicon generate src/assets/faviconDescription.json target/favicon.json public"
     },
     "dependencies": {
         "@apollo/client": "3.1.4",
         "@graphql-tools/schema": "6.2.1",
         "@material-ui/core": "4.11.0",
+        "@material-ui/icons": "4.9.1",
         "apollo-server-micro": "2.17.0",
         "cookie": "0.4.1",
         "google-auth-library": "6.0.6",
@@ -29,6 +31,7 @@
         "pg": "8.3.3",
         "react": "16.13.1",
         "react-dom": "16.13.1",
+        "react-google-login": "5.1.21",
         "sass": "1.26.10",
         "sequelize": "6.3.5",
         "sqlite3": "5.0.0"
@@ -39,14 +42,15 @@
         "@graphql-codegen/typescript-operations": "1.17.8",
         "@graphql-codegen/typescript-react-apollo": "1.17.4",
         "@graphql-codegen/typescript-resolvers": "1.17.9",
-        "@next/bundle-analyzer": "9.5.3",
         "@types/cookie": "0.4.0",
         "@types/node": "14.6.4",
         "@types/react": "16.9.49",
         "@types/react-dom": "16.9.8",
         "@types/validator": "13.1.0",
         "@types/webpack": "4.41.22",
+        "cli-real-favicon": "0.0.8",
         "prettier": "2.1.1",
-        "typescript": "4.0.2"
+        "typescript": "4.0.2",
+        "webpack-bundle-analyzer": "3.9.0"
     }
 }

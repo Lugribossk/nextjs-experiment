@@ -1,4 +1,4 @@
-import type {MutationFunctionOptions, MutationTuple} from "@apollo/client/react/types/types";
+import type {MutationFunctionOptions, MutationTuple} from "@apollo/client";
 import type {FetchResult} from "@apollo/client/link/core";
 import {Button, ButtonProps} from "@material-ui/core";
 import React from "react";

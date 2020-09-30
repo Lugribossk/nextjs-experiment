@@ -4,13 +4,17 @@ type Query {
 
 type Mutation {
     updateUser(user: UpdateUserInput!): User!
-    loginWithGoogle(idToken: String!): String!
+    loginWithGoogle(idToken: String!): Token!
     logout(blah: String): String!
 }
 
 type User {
     id: String!
     name: String!
+}
+
+type Token {
+    token: String!
 }
 
 input UpdateUserInput {

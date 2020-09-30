@@ -14,6 +14,7 @@ export const getApolloClient = (gsspContext?: GetServerSidePropsContext) => {
             cache: new InMemoryCache()
         });
     } else {
+        // TODO don't reuse client server-side?
         const {getApolloClientNode} = require("./apolloNode");
         const {createDb} = require("../db");
         client = getApolloClientNode(createDb(), gsspContext);

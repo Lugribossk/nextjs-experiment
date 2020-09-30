@@ -1,0 +1,47 @@
+{
+    "masterPicture": "src/assets/favicon.svg",
+    "iconsPath": "",
+    "design": {
+        "ios": {
+            "pictureAspect": "backgroundAndMargin",
+            "backgroundColor": "#ffffff",
+            "margin": "14%",
+            "assets": {
+                "ios6AndPriorIcons": false,
+                "ios7AndLaterIcons": false,
+                "precomposedIcons": false,
+                "declareOnlyDefaultIcon": true
+            }
+        },
+        "desktopBrowser": {
+            "design": "raw"
+        },
+        "androidChrome": {
+            "pictureAspect": "backgroundAndMargin",
+            "margin": "17%",
+            "backgroundColor": "#ffffff",
+            "themeColor": "#ffffff",
+            "manifest": {
+                "display": "standalone",
+                "orientation": "notSet",
+                "onConflict": "override",
+                "declared": true
+            },
+            "assets": {
+                "legacyIcon": false,
+                "lowResolutionIcons": false
+            }
+        },
+        "safariPinnedTab": {
+            "pictureAspect": "silhouette",
+            "themeColor": "#5bbad5"
+        }
+    },
+    "settings": {
+        "scalingAlgorithm": "Mitchell",
+        "errorOnImageTooSmall": false,
+        "readmeFile": false,
+        "htmlCodeFile": true,
+        "usePathAsIs": false
+    }
+}

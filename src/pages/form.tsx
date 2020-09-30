@@ -1,8 +1,8 @@
 import {gql, useMutation} from "@apollo/client";
 import {Button, TextField} from "@material-ui/core";
 import React from "react";
-import useForm from "../forms/useForm";
-import MutationButton from "../forms/MutationButton";
+import useForm from "../form/useForm";
+import MutationButton from "../form/MutationButton";
 
 const doStuffMutation = gql`
     mutation doStuff($blah: String!) {
@@ -13,9 +13,9 @@ const doStuffMutation = gql`
 `;
 
 const Form = () => {
-    const {useTextField, submit} = useForm();
-    const [email, emailField] = useTextField("", n => !n.includes("@") && "Must be an email");
-    const [num, numField] = useTextField(
+    const {useTextFieldState, submit} = useForm();
+    const [email, emailField] = useTextFieldState("", n => !n.includes("@") && "Must be an email");
+    const [num, numField] = useTextFieldState(
         0,
         () => undefined,
         n => parseInt(n)

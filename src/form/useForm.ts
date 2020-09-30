@@ -1,11 +1,11 @@
 import {ChangeEvent, MouseEvent, useState} from "react";
 
 type UseForm = () => {
-    useTextField: UseTextField;
+    useTextFieldState: UseTextFieldState;
     submit(onValid: (e: MouseEvent<HTMLButtonElement>) => void): (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-type UseTextField = <T>(
+type UseTextFieldState = <T>(
     defaultValue: T,
     validate?: (value: T) => string | undefined | false,
     transform?: (raw: string) => T
@@ -22,7 +22,7 @@ type TextFieldValidationProps = {
 const useForm: UseForm = () => {
     const [errors] = useState<Set<string>>(() => new Set());
 
-    const useTextField: UseTextField = (defaultValue, validate = n => undefined, transform = n => n as any) => {
+    const useTextFieldState: UseTextFieldState = (defaultValue, validate = n => undefined, transform = n => n as any) => {
         const [id] = useState(() => `${Math.random()}`);
         const [value, setValue] = useState(defaultValue);
         const [touched, setTouched] = useState(false);
@@ -69,7 +69,7 @@ const useForm: UseForm = () => {
         };
     };
 
-    return {useTextField, submit};
+    return {useTextFieldState, submit};
 };
 
 export default useForm;
