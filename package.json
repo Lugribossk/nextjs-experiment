@@ -14,7 +14,7 @@
         "codegen": "graphql-codegen --config schema/codegen.yml",
         "prettier:fix": "prettier --write \"{schema,src,test}/**/*.{ts,tsx,json,scss,graphql}\"",
         "prettier:check": "prettier --check \"{schema,src,test}/**/*.{ts,tsx,json,scss,graphql}\"",
-        "favicon":  "real-favicon generate src/assets/faviconDescription.json target/favicon.json public"
+        "favicon": "real-favicon generate src/assets/faviconDescription.json target/favicon.json public/favicon"
     },
     "dependencies": {
         "@apollo/client": "3.1.4",
@@ -26,6 +26,7 @@
         "google-auth-library": "6.0.6",
         "graphql": "15.3.0",
         "graphql-import-loader": "0.2.1",
+        "inter-ui": "3.15.0",
         "jsonwebtoken": "8.5.1",
         "next": "9.5.3",
         "pg": "8.3.3",
@@ -44,7 +45,7 @@
         "@graphql-codegen/typescript-resolvers": "1.17.9",
         "@types/cookie": "0.4.0",
         "@types/node": "14.6.4",
-        "@types/react": "16.9.49",
+        "@types/react": "16.9.51",
         "@types/react-dom": "16.9.8",
         "@types/validator": "13.1.0",
         "@types/webpack": "4.41.22",

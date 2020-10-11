@@ -30,7 +30,7 @@ export const getValidToken = (token: string): UserToken => {
 const GOOGLE_CLIENT_ID = "TODO";
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-export const authResolvers: Required<Pick<MutationResolvers, "loginWithGoogle" | "logout">> = {
+export const authResolvers: Required<Pick<MutationResolvers, "loginWithGoogle" | "login" | "logout">> = {
     async loginWithGoogle(_, {idToken}, {setCookie}) {
         const ticket = await client.verifyIdToken({
             idToken: idToken,
@@ -61,7 +61,20 @@ export const authResolvers: Required<Pick<MutationResolvers, "loginWithGoogle" |
             httpOnly: true,
             sameSite: "lax"
         });
-        return token;
+        return {token: token};
+    },
+    async login(_, {username, password}, {setCookie}) {
+        const token = signToken(username, {
+            name: "",
+            email: username
+        });
+
+        setCookie("authorization", token, {
+            maxAge: 86400,
+            httpOnly: true,
+            sameSite: "lax"
+        });
+        return {token: token};
     },
     async logout(_, {}, {setCookie}) {
         setCookie("authorization", "", {

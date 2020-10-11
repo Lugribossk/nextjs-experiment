@@ -2,7 +2,7 @@ import {gql, useMutation} from "@apollo/client";
 import {Button, TextField} from "@material-ui/core";
 import React from "react";
 import useForm from "../form/useForm";
-import MutationButton from "../form/MutationButton";
+import LoadingButton from "../form/LoadingButton";
 
 const doStuffMutation = gql`
     mutation doStuff($blah: String!) {
@@ -13,14 +13,17 @@ const doStuffMutation = gql`
 `;
 
 const Form = () => {
-    const {useTextFieldState, submit} = useForm();
+    const {useTextFieldState, useSubmitButton} = useForm();
     const [email, emailField] = useTextFieldState("", n => !n.includes("@") && "Must be an email");
     const [num, numField] = useTextFieldState(
         0,
-        () => undefined,
-        n => parseInt(n)
+        undefined,
+        parseInt
     );
-    const doStuff = useMutation<{id: string}, {blah: string}>(doStuffMutation);
+    const [doStuff] = useMutation<{id: string}, {blah: string}>(doStuffMutation);
+    const [submitButton] = useSubmitButton(() => {
+        return doStuff({variables: {blah: "test"}});
+    });
 
     return (
         <div>
@@ -28,20 +31,15 @@ const Form = () => {
                 autoFocus
                 required
                 label="your email"
-                name="email"
                 type="email"
                 variant="outlined"
                 helperText="test"
                 {...emailField}
             />
 
-            <TextField required label="some number" name="blah" type="number" variant="outlined" {...numField} />
+            <TextField required label="some number" type="number" variant="outlined" {...numField} />
 
-            <Button onClick={submit(() => console.log(email, num))}>Blah</Button>
-
-            <MutationButton mutation={doStuff} onClick={mut => mut({variables: {blah: "test"}})}>
-                Test
-            </MutationButton>
+            <LoadingButton color="primary" variant="outlined" {...submitButton}>Blah</LoadingButton>
         </div>
     );
 };
