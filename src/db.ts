@@ -1,5 +1,6 @@
-import {Sequelize} from "sequelize";
+import type {Sequelize} from "sequelize";
 
-export const createDb = () => {
-    return new Sequelize("sqlite::memory:");
+export const createDb = (): Sequelize => {
+    return undefined as any;
+    // return new Sequelize("sqlite::memory:");
 };
