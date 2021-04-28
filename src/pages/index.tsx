@@ -2,6 +2,7 @@ import {gql, useQuery} from "@apollo/client";
 import React from "react";
 import {GetServerSideProps} from "next";
 import {getApolloClient} from "../graphql/apollo";
+import {CircularProgress, Typography} from "@material-ui/core";
 
 const blah = async () => {
     const x = await Promise.resolve("test");
@@ -22,16 +23,17 @@ const Index: React.FunctionComponent<Props> = ({}) => {
         {variables: {id: "test"}}
     );
     if (loading) {
-        return <p>Loading...</p>;
+        return <CircularProgress />;
     }
     if (error) {
         console.log(error);
         return <p>Error</p>;
     }
     // blah();
+
     return (
         <>
-            <h1>Hello {data.getUser.name}</h1>
+            <Typography variant="h1">Hello {data.getUser.name}</Typography>
         </>
     );
 };

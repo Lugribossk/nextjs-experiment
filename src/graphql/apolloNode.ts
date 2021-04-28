@@ -10,14 +10,17 @@ import type {GetServerSidePropsContext} from "next";
 
 const schema = makeExecutableSchema({
     typeDefs: typeDefs,
-    resolvers: resolvers
+    resolvers: resolvers,
+    logger: {
+        log: e => console.warn(e)
+    }
 });
 
 export const getApolloServer = (db: Sequelize) => {
     return new ApolloServer({
         schema: schema,
         debug: process.env.NODE_ENV !== "production",
-        context: createApiContext(db)
+        context: createApiContext(db),
     });
 };
 
@@ -28,6 +31,17 @@ export const getApolloClientNode = (db: Sequelize, gsspContext?: GetServerSidePr
             context: createSsrContext(db, gsspContext)
         }),
         ssrMode: true,
-        cache: new InMemoryCache()
+        cache: new InMemoryCache(),
+        defaultOptions: {
+            query: {
+                fetchPolicy: "no-cache"
+            },
+            mutate: {
+                fetchPolicy: "no-cache"
+            },
+            watchQuery: {
+                fetchPolicy: "no-cache"
+            }
+        }
     });
 };

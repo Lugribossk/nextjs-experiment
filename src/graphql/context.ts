@@ -4,8 +4,7 @@ import type {ServerResponse} from "http";
 import type {Operation} from "@apollo/client";
 import type {GetServerSidePropsContext} from "next";
 import type {MicroRequest} from "apollo-server-micro/dist/types";
-import type {IncomingMessage} from "http";
-import {getValidToken, UserToken} from "../auth";
+import {assertUser, UserToken} from "../auth";
 
 export type ResolverContext = {
     db: Sequelize;
@@ -15,17 +14,6 @@ export type ResolverContext = {
 
 type ApolloServerMicroIntegration = {req: MicroRequest; res: ServerResponse};
 type SchemaLinkIntegration = Operation;
-
-const assertUser = (req: IncomingMessage) => {
-    let authorization = req.headers.authorization;
-    if (!authorization && req.headers.cookie) {
-        authorization = cookie.parse(req.headers.cookie).authorization;
-    }
-    if (!authorization) {
-        throw new Error();
-    }
-    return getValidToken(authorization);
-};
 
 export const createApiContext = (db: Sequelize) => {
     return ({req, res}: ApolloServerMicroIntegration): ResolverContext => {

@@ -11,7 +11,12 @@ export const getApolloClient = (gsspContext?: GetServerSidePropsContext) => {
     if (process.browser) {
         client = new ApolloClient({
             link: new HttpLink({uri: "/api/graphql", credentials: "same-origin"}),
-            cache: new InMemoryCache()
+            cache: new InMemoryCache(),
+            defaultOptions: {
+                watchQuery: {
+                    fetchPolicy: "cache-and-network"
+                }
+            }
         });
     } else {
         // TODO don't reuse client server-side?

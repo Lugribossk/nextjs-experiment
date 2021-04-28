@@ -7,3 +7,5 @@ yarn-error.log
 .parcel-cache
 .next
 public/favicon/html_code.html
+.env.local
+.env*.local
