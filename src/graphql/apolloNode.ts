@@ -1,23 +1,28 @@
-import path from "path";
 import fs from "fs";
-import {ApolloClient, InMemoryCache, Resolvers} from "@apollo/client";
+import path from "path";
+
+import {ApolloClient, InMemoryCache} from "@apollo/client";
 import {SchemaLink} from "@apollo/client/link/schema";
-import {ApolloServer} from "apollo-server-micro";
-import {makeExecutableSchema} from "@graphql-tools/schema";
-import type {Sequelize} from "sequelize";
-import type {GetServerSidePropsContext} from "next";
 import {mergeResolvers, mergeTypeDefs} from "@graphql-tools/merge";
-import {GraphQLSchema, parse} from "graphql";
+import {makeExecutableSchema} from "@graphql-tools/schema";
+import {ApolloServer} from "apollo-server-micro";
 import fg from "fast-glob";
+import {GraphQLSchema, parse} from "graphql";
+import type {GetServerSidePropsContext} from "next";
+import type {Sequelize} from "sequelize";
+
+import {authResolver} from "../auth/auth";
 import {userResolver} from "../auth/userResolver";
-import {createResolverContextForApi, createResolverContextForSsr, ResolverContext} from "./context";
+
+import {createResolverContextForApi, createResolverContextForSsr, ResolverContext} from "./ResolverContext";
 
 if (process.browser) {
     console.warn("Node-only code was imported in the browser");
 }
 
-let schema: GraphQLSchema;
+const RESOLVERS = [userResolver, authResolver];
 
+let schema: GraphQLSchema;
 const getSchema = () => {
     if (!schema) {
         const typeSource = fg
@@ -27,7 +32,7 @@ const getSchema = () => {
                 return parse(content);
             });
         const typeDefs = mergeTypeDefs(typeSource);
-        const resolvers = mergeResolvers<unknown, ResolverContext>([userResolver]);
+        const resolvers = mergeResolvers<unknown, ResolverContext>(RESOLVERS);
 
         schema = makeExecutableSchema<ResolverContext>({
             typeDefs: typeDefs,

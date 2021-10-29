@@ -11,18 +11,12 @@ module.exports = phase => ({
     eslint: {
         ignoreDuringBuilds: true,
     },
-    webpack(config, options) {
-        // config.module.rules.push({
-        //     exclude: /node_modules/,
-        //     test: /\.graphql$/,
-        //     use: [{loader: "graphql-import-loader"}]
-        // });
-
+    webpack: (config, options) => {
         if (phase === PHASE_PRODUCTION_BUILD) {
             config.plugins.push(
                 new BundleAnalyzerPlugin({
                     analyzerMode: "static",
-                    reportFilename: options.isServer ? "../../analyze/server.html" : "./../analyze/client.html",
+                    reportFilename: options.isServer ? "../../../analyze/server.html" : "./../analyze/client.html",
                     openAnalyzer: false
                 })
             );
@@ -30,7 +24,7 @@ module.exports = phase => ({
 
         return config;
     },
-    async headers() {
+    headers: async () => {
         return [
             {
                 source: "/",

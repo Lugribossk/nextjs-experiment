@@ -1,7 +1,8 @@
 import {gql, useQuery} from "@apollo/client";
-import React from "react";
-import {GetServerSideProps} from "next";
 import {CircularProgress, Typography} from "@mui/material";
+import {GetServerSideProps} from "next";
+import React from "react";
+
 import {getApolloClient} from "../src/graphql/apollo";
 
 class Suspender<T> {

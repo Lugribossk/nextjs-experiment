@@ -9,3 +9,5 @@ yarn-error.log
 public/favicon/html_code.html
 .env.local
 .env*.local
+src/graphql/resolvers.ts
+src/graphql/operations.ts

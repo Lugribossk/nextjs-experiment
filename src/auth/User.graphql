@@ -4,10 +4,16 @@ type User {
     email: String!
 }
 
+type LoginResult {
+    token: String!
+}
+
 extend type Query {
     currentUser: User
 }
 
 extend type Mutation {
+    login(username: String!, password: String!): LoginResult!
+    logout: Boolean!
     doStuff(blah: String!): User
 }

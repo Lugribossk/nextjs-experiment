@@ -1,7 +1,7 @@
-import React from "react";
-import Document, {Html, Head, Main, NextScript} from "next/document";
-import createEmotionServer from "@emotion/server/create-instance";
 import createCache from "@emotion/cache";
+import createEmotionServer from "@emotion/server/create-instance";
+import Document, {Html, Head, Main, NextScript} from "next/document";
+import React from "react";
 
 export default class CustomDocument extends Document {
     override render() {

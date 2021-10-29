@@ -1,14 +1,15 @@
-import React, {Suspense, useEffect} from "react";
-import type {AppProps, NextWebVitalsMetric} from "next/app";
 import {ApolloProvider} from "@apollo/client";
-import Head from "next/head";
-import "../src/styles.css";
+import createCache from "@emotion/cache";
+import {CacheProvider, EmotionCache} from "@emotion/react";
 import {CssBaseline} from "@mui/material";
 import {ThemeProvider} from "@mui/material/styles";
-import {CacheProvider, EmotionCache} from "@emotion/react";
-import createCache from "@emotion/cache";
-import theme from "../src/muiTheme";
+import type {AppProps, NextWebVitalsMetric} from "next/app";
+import Head from "next/head";
+import React, {Suspense, useEffect} from "react";
+
 import {getApolloClient} from "../src/graphql/apollo";
+import theme from "../src/muiTheme";
+import "../src/styles.css";
 
 // export const reportWebVitals = (metric: NextWebVitalsMetric ) => {
 //     console.log(metric);

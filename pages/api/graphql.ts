@@ -1,6 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from "next";
-import {getApolloServer} from "../../src/graphql/apolloNode";
+
 import {createDb} from "../../src/db";
+import {getApolloServer} from "../../src/graphql/apolloNode";
 
 const db = createDb();
 

@@ -1,8 +1,12 @@
 import type {IncomingMessage} from "http";
-import jwt from "jsonwebtoken";
-import ms from "ms";
+
+import {AuthenticationError} from "apollo-server-micro";
 import type {CookieSerializeOptions} from "cookie";
 import cookie from "cookie";
+import jwt from "jsonwebtoken";
+import ms from "ms";
+
+import type {AllResolvers} from "../graphql/resolvers";
 
 const ALGORITHM = "HS256";
 const SECRET = "TODO";
@@ -11,6 +15,7 @@ const COOKIE_NAME = "authorization";
 const COOKIE_DURATION = "7d";
 
 export interface UserToken {
+    id: string;
     name: string;
     email: string;
 }
@@ -31,18 +36,21 @@ const getValidToken = (token: string): UserToken => {
     }) as UserToken;
 };
 
-export const assertUser = (req: IncomingMessage) => {
+export const getUser = (req: IncomingMessage): UserToken | undefined => {
     let authorization: string | undefined;
     if (req.headers.authorization?.startsWith("Bearer ")) {
         authorization = req.headers.authorization.slice(7);
-    }
-    if (!authorization && req.headers.cookie) {
+    } else if (req.headers.cookie) {
         authorization = cookie.parse(req.headers.cookie)[COOKIE_NAME];
     }
     if (!authorization) {
-        throw new Error("Auth token or cookie not found");
+        return undefined;
     }
-    return getValidToken(authorization);
+    try {
+        return getValidToken(authorization);
+    } catch {
+        return undefined;
+    }
 };
 
 const cookieOptions: CookieSerializeOptions = {
@@ -52,26 +60,31 @@ const cookieOptions: CookieSerializeOptions = {
     secure: process.env.NODE_ENV !== "development"
 };
 
-// export const authResolvers: Required<Pick<MutationResolvers, "loginWithGoogle" | "login" | "logout">> = {
-//     async login(_, {username, password}, {setCookie}) {
-//         // TODO
-//
-//         const token = createAuthToken(username, {
-//             name: "TODO",
-//             email: username
-//         });
-//
-//         setCookie(COOKIE_NAME, token, {
-//             maxAge: Math.round(ms(COOKIE_DURATION) / 1000),
-//             ...cookieOptions
-//         });
-//         return {token: token};
-//     },
-//     async logout(_, {}, {setCookie}) {
-//         setCookie(COOKIE_NAME, "", {
-//             maxAge: -1,
-//             ...cookieOptions
-//         });
-//         return "";
-//     }
-// };
+export const authResolver: AllResolvers = {
+    Mutation: {
+        login(p, {username, password}, {setCookie}) {
+            if (username !== "test" || password !== "test") {
+                throw new AuthenticationError("");
+            }
+
+            const token = createAuthToken(username, {
+                id: "123",
+                name: "TODO",
+                email: "TODO"
+            });
+
+            setCookie(COOKIE_NAME, token, {
+                maxAge: Math.round(ms(COOKIE_DURATION) / 1000),
+                ...cookieOptions
+            });
+            return {token: token};
+        },
+        logout(p, args, {setCookie}) {
+            setCookie(COOKIE_NAME, "", {
+                maxAge: -1,
+                ...cookieOptions
+            });
+            return true;
+        }
+    }
+};

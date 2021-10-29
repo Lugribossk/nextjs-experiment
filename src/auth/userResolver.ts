@@ -1,13 +1,9 @@
-import type {Resolvers} from "../../target/codegen/graphql";
+import type {AllResolvers} from "../graphql/resolvers";
 
-export const userResolver: Resolvers = {
+export const userResolver: AllResolvers = {
     Query: {
-        currentUser: () => {
-            return {
-                id: "123",
-                name: "test",
-                email: "test@example.com"
-            };
+        currentUser: (p, args, {getUser}) => {
+            return getUser() || null;
         }
     },
     Mutation: {
