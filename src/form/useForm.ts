@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-return */
 import {ChangeEvent, MouseEvent, useRef, useState} from "react";
 
 type UseForm = () => {
@@ -11,17 +12,15 @@ type UseTextFieldState = <T = string>(
     transform?: (raw: string) => T
 ) => [T, TextFieldValidationProps<T>];
 
-type TextFieldValidationProps<T = string> = {
+interface TextFieldValidationProps<T = string> {
     error: boolean;
     helperText?: string;
     value: T;
     onChange(e: ChangeEvent<HTMLInputElement>): void;
     onBlur(): void;
-};
+}
 
-type UseSubmitButton = (
-    onValid: (e: MouseEvent<HTMLButtonElement>) => Promise<unknown>
-) => [
+type UseSubmitButton = (onValid: (e: MouseEvent<HTMLButtonElement>) => Promise<unknown>) => [
     {
         loading: boolean;
         onClick(e: MouseEvent<HTMLButtonElement>): void;

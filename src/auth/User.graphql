@@ -1,0 +1,13 @@
+type User {
+    id: String!
+    name: String!
+    email: String!
+}
+
+extend type Query {
+    currentUser: User
+}
+
+extend type Mutation {
+    doStuff(blah: String!): User
+}

@@ -1,8 +1,8 @@
 import {gql, useMutation} from "@apollo/client";
-import {Button, TextField} from "@material-ui/core";
+import {Button, TextField} from "@mui/material";
 import React from "react";
-import useForm from "../form/useForm";
-import LoadingButton from "../form/LoadingButton";
+import useForm from "../src/form/useForm";
+import {LoadingButton} from "../src/form/LoadingButton";
 
 const doStuffMutation = gql`
     mutation doStuff($blah: String!) {
@@ -15,11 +15,7 @@ const doStuffMutation = gql`
 const Form = () => {
     const {useTextFieldState, useSubmitButton} = useForm();
     const [email, emailField] = useTextFieldState("", n => !n.includes("@") && "Must be an email");
-    const [num, numField] = useTextFieldState(
-        0,
-        undefined,
-        parseInt
-    );
+    const [num, numField] = useTextFieldState(0, undefined, parseInt);
     const [doStuff] = useMutation<{id: string}, {blah: string}>(doStuffMutation);
     const [submitButton] = useSubmitButton(() => {
         return doStuff({variables: {blah: "test"}});
@@ -39,7 +35,9 @@ const Form = () => {
 
             <TextField required label="some number" type="number" variant="outlined" {...numField} />
 
-            <LoadingButton color="primary" variant="outlined" {...submitButton}>Blah</LoadingButton>
+            <LoadingButton color="primary" variant="outlined" {...submitButton}>
+                Blah
+            </LoadingButton>
         </div>
     );
 };

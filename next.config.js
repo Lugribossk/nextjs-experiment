@@ -3,17 +3,20 @@ const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 
 module.exports = phase => ({
     poweredByHeader: false,
-    distDir: "target/next",
+    distDir: process.env.NODE_ENV === 'test' ? 'target/.next-test' : 'target/.next',
     reactStrictMode: true,
-    experimental: {
-        modern: true
+    // experimental: {
+    //     modern: true
+    // },
+    eslint: {
+        ignoreDuringBuilds: true,
     },
     webpack(config, options) {
-        config.module.rules.push({
-            exclude: /node_modules/,
-            test: /\.graphql$/,
-            use: [{loader: "graphql-import-loader"}]
-        });
+        // config.module.rules.push({
+        //     exclude: /node_modules/,
+        //     test: /\.graphql$/,
+        //     use: [{loader: "graphql-import-loader"}]
+        // });
 
         if (phase === PHASE_PRODUCTION_BUILD) {
             config.plugins.push(

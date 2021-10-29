@@ -1,0 +1,27 @@
+schema: "src/**/*.graphql"
+documents:
+    - "pages/**/*.tsx"
+    - "src/**/*.ts*"
+overwrite: true
+hooks:
+    afterAllFileWrite:
+        - prettier --write
+generates:
+    target/codegen/graphql.ts:
+        config:
+            contextType: "../../src/graphql/context#ResolverContext"
+            useIndexSignature: true
+            useTypeImports: true
+
+#            avoidOptionals: true
+#            enumsAsTypes: true
+#            immutableTypes: true
+#            preResolveTypes: true
+#            skipTypeName: true
+        plugins:
+            - "typescript"
+#            - "typescript-operations"
+            - "typescript-resolvers"
+            - "add":
+                  content:
+                      - "/* eslint-disable */"

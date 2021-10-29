@@ -1,21 +1,24 @@
+import type {ServerResponse} from "http";
 import cookie, {CookieSerializeOptions} from "cookie";
 import type {Sequelize} from "sequelize";
-import type {ServerResponse} from "http";
 import type {Operation} from "@apollo/client";
 import type {GetServerSidePropsContext} from "next";
 import type {MicroRequest} from "apollo-server-micro/dist/types";
-import {assertUser, UserToken} from "../auth";
+import {assertUser, UserToken} from "../auth/auth";
 
-export type ResolverContext = {
+export interface ResolverContext {
     db: Sequelize;
     setCookie(name: string, value: string, options?: CookieSerializeOptions): void;
     assertUser(): UserToken;
-};
+}
 
-type ApolloServerMicroIntegration = {req: MicroRequest; res: ServerResponse};
+interface ApolloServerMicroIntegration {
+    req: MicroRequest;
+    res: ServerResponse;
+}
 type SchemaLinkIntegration = Operation;
 
-export const createApiContext = (db: Sequelize) => {
+export const createResolverContextForApi = (db: Sequelize) => {
     return ({req, res}: ApolloServerMicroIntegration): ResolverContext => {
         return {
             db: db,
@@ -29,7 +32,7 @@ export const createApiContext = (db: Sequelize) => {
     };
 };
 
-export const createSsrContext = (db: Sequelize, gsspContext?: GetServerSidePropsContext) => {
+export const createResolverContextForSsr = (db: Sequelize, gsspContext?: GetServerSidePropsContext) => {
     return (operation: SchemaLinkIntegration): ResolverContext => {
         return {
             db: db,
