@@ -18,8 +18,7 @@ export default createTheme({
                     height: "100%"
                 },
                 body: {
-                    height: "100%",
-                    backgroundColor: "grey"
+                    height: "100%"
                 },
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 "#__next": {

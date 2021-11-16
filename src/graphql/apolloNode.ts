@@ -11,7 +11,7 @@ import {GraphQLSchema, parse} from "graphql";
 import type {GetServerSidePropsContext} from "next";
 import type {Sequelize} from "sequelize";
 
-import {authResolver} from "../auth/auth";
+import {authResolver} from "../auth/authResolver";
 import {userResolver} from "../auth/userResolver";
 
 import {createResolverContextForApi, createResolverContextForSsr, ResolverContext} from "./ResolverContext";

@@ -1,14 +1,20 @@
+import type {ServerResponse} from "http";
+
+import type {MicroRequest} from "apollo-server-micro/dist/types";
 import type {NextApiRequest, NextApiResponse} from "next";
 
 import {createDb} from "../../src/db";
 import {getApolloServer} from "../../src/graphql/apolloNode";
 
-const db = createDb();
+let apolloHandler: (req: MicroRequest, res: ServerResponse) => Promise<void>;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const apollo = getApolloServer(db);
-    await apollo.start();
-    await apollo.createHandler({path: "/api/graphql"})(req, res);
+    if (!apolloHandler) {
+        const apollo = getApolloServer(createDb());
+        await apollo.start();
+        apolloHandler = apollo.createHandler({path: "/api/graphql"});
+    }
+    await apolloHandler(req, res);
 };
 export default handler;
 

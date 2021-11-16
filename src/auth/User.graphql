@@ -4,16 +4,17 @@ type User {
     email: String!
 }
 
-type LoginResult {
-    token: String!
+type LoginState {
+    id: String!
+    user: User
 }
 
 extend type Query {
-    currentUser: User
+    currentUser: LoginState!
 }
 
 extend type Mutation {
-    login(username: String!, password: String!): LoginResult!
-    logout: Boolean!
+    login(username: String!, password: String!): LoginState!
+    logout: LoginState!
     doStuff(blah: String!): User
 }

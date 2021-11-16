@@ -16,8 +16,6 @@ const COOKIE_DURATION = "7d";
 
 export interface UserToken {
     id: string;
-    name: string;
-    email: string;
 }
 
 const createAuthToken = (subject: string, payload: UserToken) => {
@@ -36,7 +34,7 @@ const getValidToken = (token: string): UserToken => {
     }) as UserToken;
 };
 
-export const getUser = (req: IncomingMessage): UserToken | undefined => {
+export const getUserToken = (req: IncomingMessage): UserToken | undefined => {
     let authorization: string | undefined;
     if (req.headers.authorization?.startsWith("Bearer ")) {
         authorization = req.headers.authorization.slice(7);
@@ -61,30 +59,39 @@ const cookieOptions: CookieSerializeOptions = {
 };
 
 export const authResolver: AllResolvers = {
+    Query: {
+        currentUser: (p, args, {getUser}) => {
+            return {id: "current", user: getUser() || null};
+        }
+    },
     Mutation: {
         login(p, {username, password}, {setCookie}) {
             if (username !== "test" || password !== "test") {
                 throw new AuthenticationError("");
             }
 
-            const token = createAuthToken(username, {
+            const user = {
                 id: "123",
                 name: "TODO",
                 email: "TODO"
-            });
+            };
+            const token = createAuthToken(username, {id: user.id});
 
             setCookie(COOKIE_NAME, token, {
                 maxAge: Math.round(ms(COOKIE_DURATION) / 1000),
                 ...cookieOptions
             });
-            return {token: token};
+            return {
+                id: "current",
+                user: user
+            };
         },
         logout(p, args, {setCookie}) {
             setCookie(COOKIE_NAME, "", {
                 maxAge: -1,
                 ...cookieOptions
             });
-            return true;
+            return {id: "current"};
         }
     }
 };

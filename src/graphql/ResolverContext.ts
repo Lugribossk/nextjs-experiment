@@ -7,12 +7,13 @@ import cookie, {CookieSerializeOptions} from "cookie";
 import type {GetServerSidePropsContext} from "next";
 import type {Sequelize} from "sequelize";
 
-import {getUser, UserToken} from "../auth/auth";
+import type {User} from "../auth/User";
+import {getUserToken, UserToken} from "../auth/authResolver";
 
 export interface ResolverContext {
     db: Sequelize;
     setCookie(name: string, value: string, options?: CookieSerializeOptions): void;
-    getUser(): UserToken | undefined;
+    getUser(): User | undefined;
     assertUser(): UserToken;
 }
 
@@ -23,43 +24,40 @@ interface ApolloServerMicroIntegration {
 type SchemaLinkIntegration = Operation;
 
 export const createResolverContextForApi = (db: Sequelize) => {
-    return ({req, res}: ApolloServerMicroIntegration): ResolverContext => {
-        const user = getUser(req);
-        return {
-            db: db,
-            setCookie: (name, value, options) => {
-                res.setHeader("Set-Cookie", cookie.serialize(name, value, options));
-            },
-            getUser: () => {
-                return user;
-            },
-            assertUser: () => {
-                if (!user) {
-                    throw new AuthenticationError("");
-                }
-                return user;
-            }
-        };
-    };
+    return ({req, res}: ApolloServerMicroIntegration): ResolverContext => create(db, req, res);
 };
 
 export const createResolverContextForSsr = (db: Sequelize, gsspContext?: GetServerSidePropsContext) => {
-    return (operation: SchemaLinkIntegration): ResolverContext => {
-        const user = gsspContext ? getUser(gsspContext.req) : undefined;
-        return {
-            db: db,
-            setCookie: (name, value, options) => {
-                gsspContext?.res.setHeader("Set-Cookie", cookie.serialize(name, value, options));
-            },
-            getUser: () => {
-                return user;
-            },
-            assertUser: () => {
-                if (!user) {
-                    throw new AuthenticationError("");
-                }
-                return user;
+    return (operation: SchemaLinkIntegration): ResolverContext => create(db, gsspContext?.req, gsspContext?.res);
+};
+
+const create = (db: Sequelize, req: MicroRequest | undefined, res: ServerResponse | undefined): ResolverContext => {
+    const token = req ? getUserToken(req) : undefined;
+    return {
+        db: db,
+        setCookie: (name, value, options) => {
+            res?.setHeader("Set-Cookie", cookie.serialize(name, value, options));
+        },
+        getUser: () => {
+            if (!token) {
+                return undefined;
             }
-        };
+
+            return {
+                id: "123",
+                name: "TODO",
+                email: "TODO"
+            };
+        },
+        assertUser: () => {
+            if (!token) {
+                throw new AuthenticationError("");
+            }
+            return {
+                id: "123",
+                name: "TODO",
+                email: "TODO"
+            };
+        }
     };
 };

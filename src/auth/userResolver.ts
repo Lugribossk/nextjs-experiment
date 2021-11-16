@@ -1,11 +1,7 @@
 import type {AllResolvers} from "../graphql/resolvers";
 
 export const userResolver: AllResolvers = {
-    Query: {
-        currentUser: (p, args, {getUser}) => {
-            return getUser() || null;
-        }
-    },
+    Query: {},
     Mutation: {
         doStuff: () => {
             return {

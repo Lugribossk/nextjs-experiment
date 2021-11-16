@@ -7,9 +7,8 @@ import type {AppProps, NextWebVitalsMetric} from "next/app";
 import Head from "next/head";
 import React, {Suspense, useEffect} from "react";
 
-import {getApolloClient} from "../src/graphql/apollo";
+import {getApolloClientBrowser} from "../src/graphql/apolloBrowser";
 import theme from "../src/muiTheme";
-import "../src/styles.css";
 
 // export const reportWebVitals = (metric: NextWebVitalsMetric ) => {
 //     console.log(metric);
@@ -37,7 +36,7 @@ const App: React.FunctionComponent<Blah> = ({
     __N_SSG: isSsr,
     emotionCache = clientSideEmotionCache
 }) => {
-    const client = getApolloClient();
+    const client = getApolloClientBrowser();
 
     return (
         <CacheProvider value={emotionCache}>
